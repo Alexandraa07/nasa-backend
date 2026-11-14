@@ -1,3 +1,6 @@
+# This file contains the logic for Round 1.
+# It validates the location choices, saves team submissions and votes,
+# and calculates the final score.
 
 def round1(team_name: str, chosen_location: str):
     location = chosen_location.upper()
@@ -61,6 +64,7 @@ def vote_round1(session, crew_id: str, choice: str):
         raise ValueError("Choose A, B or C!")
 
     session["r1"]["votes"][crew_id] = choice
+
     return session
 
 
@@ -76,10 +80,31 @@ def set_final_round1(session, choice: str):
     if choice not in ["A", "B", "C"]:
         raise ValueError("Choose A, B or C!")
 
-    points = {"A": 3, "C": 2, "B": 1}
+    points = {
+        "A": 3,
+        "C": 2,
+        "B": 1
+    }
+
+    water_supplies = {
+        "A": {
+            "thickWaterBags": 1,
+            "wideWaterBags": 2
+        },
+        "C": {
+            "thickWaterBags": 1,
+            "wideWaterBags": 1
+        },
+        "B": {
+            "thickWaterBags": 0,
+            "wideWaterBags": 1
+        }
+    }
 
     session["r1"]["final"] = choice
     session["r1"]["score"] = points[choice]
+    session["r1"]["waterSupplies"] = water_supplies[choice].copy()
+
     session["classScore"] += points[choice]
 
     return session

@@ -1,11 +1,6 @@
 
-from Game.round2 import (
-    round2,
-    calculate_day_result,
-    calculate_round2_score,
-    save_day_result,
-    end_round2
-)
+from Game.round2 import round2,calculate_day_result,calculate_round2_score,save_day_result,end_round2
+from Routers.Websocket_utils.team_events import handle_team_event
 
 
 def create_session():
@@ -68,6 +63,35 @@ end_round2(session)
 
 assert session["r2"]["score"] == 3
 assert session["classScore"] == 3
+
+
+# Test 7: Team sets a Round 2 level
+
+session = create_session()
+session["crews"] = [
+    {
+        "id": "orion",
+        "devices": ["device1"],
+        "status": "Exploring"
+    }
+]
+
+handle_team_event(
+    session,
+    "device1",
+    {
+        "event": "team:setLevel",
+        "system": "lifeSupport",
+        "levelId": "basic"
+    }
+)
+
+assert session["r2"]["levels"]["lifeSupport"] == {
+    "levelId": "basic",
+    "cost": 1
+}
+
+print("Team setLevel test passed!")
 
 
 print("All Round 2 tests passed!")

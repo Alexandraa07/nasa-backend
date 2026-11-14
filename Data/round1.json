@@ -33,10 +33,8 @@
       "data": {
         "map": "Permanently shadowed areas and possible ice deposits",
         "hint": {
-          "A": 85,
-          "B": 105,
-          "C": 95,
-          "unit": "K"
+          "text": "NASA's LRO spacecraft measured -248 °C (25 K) inside a dark crater near the Moon's north pole: one of the coldest places ever measured in the solar system. Dark craters near the south pole are just as cold. Some have not seen sunlight for billions of years, so ice there can stay frozen.",
+          "label": "Saved"
         }
       }
     },
@@ -69,18 +67,30 @@
       }
     }
   },
-  "waterHint": {
-    "A": 85,
-    "B": 105,
-    "C": 95,
-    "unit": "K"
-  },
   "results": {
-    "ranking": ["A", "C", "B"],
+    "ranking": [
+      "A",
+      "C",
+      "B"
+    ],
     "points": {
       "A": 3,
       "C": 2,
       "B": 1
+    },
+    "waterSupplies": {
+      "A": {
+        "thickWaterBags": 1,
+        "wideWaterBags": 2
+      },
+      "C": {
+        "thickWaterBags": 1,
+        "wideWaterBags": 1
+      },
+      "B": {
+        "thickWaterBags": 0,
+        "wideWaterBags": 1
+      }
     }
   }
 }

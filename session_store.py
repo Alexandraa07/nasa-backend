@@ -1,15 +1,22 @@
+# This file creates and stores game sessions.
+# It generates room codes and initializes the session data.
+
 import secrets
 
-CHARACTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ" # characters for the random code
-sessions = {} # here we keep the game's sessions
+CHARACTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ"
+
+sessions = {}
+
 
 def generate_code():
     while True:
         letters = []
+
         for i in range(4):
             letters.append(secrets.choice(CHARACTERS))
 
         code = "".join(letters)
+
         if code not in sessions:
             return code
 
@@ -23,6 +30,7 @@ def create_session_host():
         "classScore": 0,
         "crews": [],
         "hostToken": secrets.token_urlsafe(16),
+
         "timer": {
             "endsAt": None
         },
@@ -31,6 +39,11 @@ def create_session_host():
             "submissions": {},
             "votes": {},
             "final": None,
+            "score": 0,
+            "waterSupplies": {
+                "thickWaterBags": 0,
+                "wideWaterBags": 0
+            },
             "hintsReleased": []
         },
 

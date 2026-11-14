@@ -1,3 +1,5 @@
+# This file manages active WebSocket connections
+# for hosts and team devices.
 
 device_connections = {}
 host_connections = {}

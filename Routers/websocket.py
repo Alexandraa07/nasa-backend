@@ -1,3 +1,5 @@
+# This file handles WebSocket connections
+# and routes messages between the host, server and team devices.
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from session_store import sessions
@@ -25,10 +27,10 @@ def get_session_state(session):
     step_data = None
 
     if session["round"] == 1:
-        step_data = ROUND1_DATA.get(session["step"])
+        step_data = ROUND1_DATA
 
     elif session["round"] == 2:
-        step_data = ROUND2_DATA.get(session["step"])
+        step_data = ROUND2_DATA
 
     return {
         "event": "session:state",
@@ -140,10 +142,24 @@ async def websocket_endpoint(websocket: WebSocket):
                     crew = handle_team_event(session, device_id, data)
 
                     await send_to_all(code, {
-                        "event": "crew:status",
-                        "crewId": crew["id"],
-                        "status": crew["status"]
+                    "event": "crew:status",
+                    "crewId": crew["id"],
+                    "status": crew["status"]
                     })
+
+                    if event == "team:vote":
+                        votes = session["r1"]["votes"]
+
+                        tally = {
+                            "A": sum(1 for vote in votes.values() if vote == "A"),
+                            "B": sum(1 for vote in votes.values() if vote == "B"),
+                            "C": sum(1 for vote in votes.values() if vote == "C")
+                        }
+
+                        await send_to_all(code, {
+                            "event": "tally:update",
+                            **tally
+                        })
 
                 else:
                     raise ValueError("Unknown event")

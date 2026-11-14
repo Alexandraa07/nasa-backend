@@ -5,5 +5,3 @@ app = FastAPI()
 
 app.include_router(sessions.router)
 app.include_router(websocket.router)
-
-

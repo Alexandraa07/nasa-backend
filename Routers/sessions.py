@@ -1,4 +1,7 @@
-from fastapi import APIRouter, HTTPException
+# This file contains the session API endpoints.
+# It allows the host to create a new session
+# and retrieve information about an existing session.
+# from fastapi import APIRouter, HTTPException
 from session_store import create_session_host, sessions
 
 router = APIRouter(prefix="/sessions", tags=["Sessions"])

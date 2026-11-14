@@ -1,5 +1,8 @@
+# This file handles events sent by team devices,
+# such as submissions, votes and system level choices.
 
 from Game.round1 import submit_round1, vote_round1
+from Game.round2 import validate_level
 from .connections import get_device_crew, CREW_IDS
 
 
@@ -59,6 +62,20 @@ def handle_team_event(session, device_id, data):
             crew["id"],
             data.get("choice", "")
         )
+
+    elif event == "team:setLevel":
+        if session["round"] != 2 or session["step"] != "plan":
+            raise ValueError("Level selection is not allowed now!")
+
+        system = data.get("system", "")
+        level_id = data.get("levelId", "")
+
+        cost = validate_level(system, level_id)
+
+        session["r2"]["levels"][system] = {
+            "levelId": level_id,
+            "cost": cost
+        }
 
     else:
         raise ValueError("Unknown team event")

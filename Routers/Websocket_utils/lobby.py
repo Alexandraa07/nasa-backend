@@ -1,3 +1,4 @@
+# This file handles team joining and lobby updates.
 
 from .connections import device_connections, host_connections
 
